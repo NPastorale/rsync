@@ -1,0 +1,24 @@
+name: Multiarch-build
+
+on:
+  push:
+    branches:
+      - "master"
+  pull_request:
+    branches:
+      - "master"
+
+jobs:
+  get-version-from-package:
+    uses: npastorale/workflows/.github/workflows/release-version-from-package.yaml@master
+    with:
+      package-name: rsync
+
+  multiarch-build:
+    uses: npastorale/workflows/.github/workflows/multiarch-build.yaml@master
+    needs: get-version-from-package
+    with:
+      username: npastorale
+      release-version: ${{ needs.get-version-from-package.outputs.release-version }}
+    secrets:
+      access-token: ${{ secrets.docker_token }}
