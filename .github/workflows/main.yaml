@@ -17,6 +17,9 @@ jobs:
   multiarch-build:
     uses: npastorale/workflows/.github/workflows/multiarch-build.yaml@master
     needs: get-version-from-package
+    permissions:
+      contents: read
+      packages: write
     with:
       username: npastorale
       release-version: ${{ needs.get-version-from-package.outputs.release-version }}
